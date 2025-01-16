@@ -1,14 +1,10 @@
 
 set(SOURCES
-    shader.cpp
-    renderer.cpp
-    vertex_array.cpp
+
 )
 
 set(HEADERS
-    shader.h
-    renderer.h
-    vertex_array.h
+    
 )
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS})

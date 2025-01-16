@@ -1,10 +1,14 @@
 #pragma once
 #include <memory>
+#include <string>
+#include <GL/glew.h>
 
 class Shader {
 public:
-    Shader();
+    Shader(GLenum type, const std::string& source);
     ~Shader();
+
+    GLuint getID() const;
 
 private:
     class Impl;

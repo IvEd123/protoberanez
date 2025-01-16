@@ -1,10 +1,10 @@
 
 set(SOURCES
-    ./application.cpp
+    application.cpp
 )
 
 set(HEADERS
-    ./application.h
+    application.h
 )
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS})
