@@ -1,4 +1,5 @@
 #include "shader.h"
+#include <iostream>
 
 GLenum typeToGlenum(Shader::Type t) {
     switch (t)
@@ -32,7 +33,7 @@ Shader::Shader(Shader::Type type, const std::string& source) :
     if (!success) {
         char infoLog[512];
         glGetShaderInfoLog(m_d->m_shaderId, 512, nullptr, infoLog);
-        //std::cerr << "Error compiling shader: " << infoLog << std::endl;
+        std::cerr << "Error compiling shader: " << infoLog << std::endl;
     }
 }
 

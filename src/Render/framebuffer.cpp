@@ -1,4 +1,5 @@
 #include "framebuffer.h"
+#include <string>
 
 class Framebuffer::Impl {
 public:
@@ -19,12 +20,11 @@ Framebuffer::Impl::~Impl() {}
 
 
 Framebuffer::Framebuffer(int width, int height) :
-    m_d(std::make_unique<Impl>()){
-    // Создаём фреймбуфер
+    m_d(std::make_unique<Impl>()) {
+    
     glGenFramebuffers(1, &m_d->m_fboId);
     glBindFramebuffer(GL_FRAMEBUFFER, m_d->m_fboId);
 
-    // Создаём текстуру для хранения цвета
     glGenTextures(1, &m_d->m_textureId);
     glBindTexture(GL_TEXTURE_2D, m_d->m_textureId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
@@ -32,17 +32,10 @@ Framebuffer::Framebuffer(int width, int height) :
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_d->m_textureId, 0);
 
-    // Создаём рендербуфер для хранения глубины и трафарета
     glGenRenderbuffers(1, &m_d->m_rboId);
     glBindRenderbuffer(GL_RENDERBUFFER, m_d->m_rboId);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_d->m_width, m_d->m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_d->m_rboId);
-
-    // Проверяем, что фреймбуфер корректен
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) 
-        throw "Framebuffer is not complete!";
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 Framebuffer::~Framebuffer() {

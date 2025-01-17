@@ -1,5 +1,6 @@
 #include "shader_program.h"
 #include "shader.h"
+#include <GL/glew.h>
 
 class ShaderProgram::Impl {
 public:
@@ -9,13 +10,14 @@ public:
     GLuint m_programId {0};
 };
 
-ShaderProgram::Impl::Impl() {}
+ShaderProgram::Impl::Impl() {
+    
+}
 
 ShaderProgram::Impl::~Impl() {}
 
 ShaderProgram::ShaderProgram() : 
     m_d(std::make_unique<Impl>()) {
-    m_d->m_programId = glCreateProgram();
 }
 
 ShaderProgram::~ShaderProgram(){
@@ -23,6 +25,9 @@ ShaderProgram::~ShaderProgram(){
 }
 
 void ShaderProgram::attachShader(const Shader &shader){
+    if(!m_d->m_programId)
+        m_d->m_programId = glCreateProgram();
+
     glAttachShader(m_d->m_programId, shader.getID());
 }
 

@@ -8,11 +8,10 @@ const std::string screenFragmentShaderSource = R"(
     #version 330 core
     out vec4 fragColor;
     in vec2 texCoord;
-
     uniform sampler2D screenTexture;
 
     void main() {
-        fragColor = texture(screenTexture, texCoord);
+        fragColor = vec4(1.0, 0.0, 0.0, 1.0);//texture(screenTexture, texCoord);
     }
 )";
 
@@ -60,6 +59,9 @@ Renderer::Impl::Impl() {
             {1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float))}
         }
     );
+    m_screen.drawFunc = [] () {
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    };
     m_screen.getVao().unbind();
 }
 
@@ -72,22 +74,19 @@ Renderer::Renderer(int width, int height) :
     m_d->m_width = width;
     m_d->m_height = height;
 
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) 
-        throw "Failed to initialize GLEW";
-
-    glViewport(0, 0, width, height);
 }
 
 Renderer::~Renderer() {}
 
 void Renderer::draw(const DrawObject & obj, const Framebuffer &target) {
+    target.bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     obj.getProgram().use();
     obj.getVao().bind();
     obj.drawFunc();
     obj.getVao().unbind();
+    target.unbind(m_d->m_width, m_d->m_height);
 }
 
 void Renderer::drawBuffer(const Framebuffer &buff) {
