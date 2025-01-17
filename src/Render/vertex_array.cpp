@@ -32,14 +32,14 @@ void VertexArray::unbind() const {
     glBindVertexArray(0);
 }
 
-void VertexArray::setData(const std::vector<float>& vertices, GLenum usage = GL_STATIC_DRAW) {
+void VertexArray::setData(const std::vector<float>& vertices, GLenum usage ) {
     glBindBuffer(GL_ARRAY_BUFFER, m_d->m_vboID);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), usage);
 }
 
-void VertexArray::setAttribute(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void* pointer) {
-    glVertexAttribPointer(index, size, type, normalized, stride, pointer);
-    glEnableVertexAttribArray(index);
+void VertexArray::setAttribute(const VertexArrayAttribute& attr) {
+    glVertexAttribPointer(attr.index, attr.size, attr.type, attr.normalized, attr.stride, attr.pointer);
+    glEnableVertexAttribArray(attr.index);
 }
 
 

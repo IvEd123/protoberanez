@@ -1,5 +1,13 @@
 #include "shader.h"
 
+GLenum typeToGlenum(Shader::Type t) {
+    switch (t)
+    {
+        case Shader::Type::VertexShader: return GL_VERTEX_SHADER;
+        case Shader::Type::FragmentShader: return GL_FRAGMENT_SHADER;
+    }
+}
+
 class Shader::Impl {
 public:
     Impl();
@@ -12,9 +20,9 @@ Shader::Impl::Impl() {}
 
 Shader::Impl::~Impl() {}
 
-Shader::Shader(GLenum type, const std::string& source) :
+Shader::Shader(Shader::Type type, const std::string& source) :
     m_d(std::make_unique<Impl>()) {
-    m_d->m_shaderId = glCreateShader(type);
+    m_d->m_shaderId = glCreateShader(typeToGlenum(type));
     const char* src = source.c_str();
     glShaderSource(m_d->m_shaderId, 1, &src, nullptr);
     glCompileShader(m_d->m_shaderId);
