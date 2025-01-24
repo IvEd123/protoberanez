@@ -6,6 +6,7 @@ set(SOURCES
     vertex_array.cpp
     framebuffer.cpp
     draw_object.cpp
+    texture.cpp
 )
 
 set(HEADERS
@@ -15,6 +16,7 @@ set(HEADERS
     vertex_array.h
     framebuffer.h
     draw_object.h
+    texture.h
 )
 
 target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} ${HEADERS})
