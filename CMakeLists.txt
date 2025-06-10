@@ -19,6 +19,9 @@ find_package(GLEW REQUIRED CONFIG)
 
 add_subdirectory(src)
 
+enable_testing()
+add_subdirectory(tests)
+
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2main SDL2::SDL2-static)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2_image::SDL2_image-static)
